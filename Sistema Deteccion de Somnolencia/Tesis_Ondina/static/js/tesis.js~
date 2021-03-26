@@ -1,0 +1,10 @@
+$("#entrenarS").click(function (event) {
+	alert("Se ha iniciado el procesamiento de las imagenes, favor espere unos minutos hasta minalizar");
+        $.ajax({
+                url:"/entrenar",
+                data:"",
+                contentType: "application/json",
+                success:function(result){
+                    alert(result.mensaje);
+          }});
+    });

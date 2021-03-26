@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+import os
+import time
+import cv2
+import procesarImagen as pi
+import deteccion as d
+import redneuronal as rn
+import video as v
+from alarma import Alarma
+from pybrain.tools.xml.networkreader import NetworkReader
+
+
+def run():
+    """Es la clase principal en el cual se sigue la secuencia del procesamiento"""
+    a = Alarma()
+    """Al inicializar genera un sonido inidicado queel dispositivo esa funcionando
+    sin contratiempos"""
+    a.inicio()
+
+    #Crear Red Neuronal
+    red1 = rn.crearRN()
+    red2 = rn.crearRN()
+    red3 = rn.crearRN()
+
+    #Se verifica si el archivo xml que contiene la red neuronal entrenada existe
+    path = os.path.dirname(__file__)
+
+    if os.path.isfile('rna_somnolencia.xml'):
+        red_somnolencia = NetworkReader.readFrom('rna_somnolencia.xml')
+    else:
+	print "No existe la red neuronal solicitada"
+
+    if os.path.isfile('rna_atento.xml'):
+        red_atento = NetworkReader.readFrom('rna_atento.xml')
+    else:
+	print "No existe la red neuronal solicitada"
+
+    if os.path.isfile('rna_operador.xml'):
+        red_operador = NetworkReader.readFrom('rna_operador.xml')
+    else:
+	print "No existe la red neuronal solicitada"    
+    
+    #Se la camara con la que se va a trabajar
+    try:
+        camara = v.capturarVideo()
+    except:
+        a.noCamara()
+	
+
+
+    while True:
+        Somnolencia = 0.00001
+        Atencion = 0.00001
+        Operador = 0.00001
+        
+        #Obtener Video
+        val, frame = v.obtenerVideo(camara)
+	cv2.imshow('frame',frame)
+
+	if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        print "fin del ciclo"
+
+        #Procesar imagenes del video
+        improcesada = pi.procesarImagen(frame)
+        
+        cara = d.deteccionFacial(improcesada)
+        if d.aux == False:
+	    print "No hay cara"
+	    a.deteccionNula()
+	    
+        else:
+            Somnolencia = rn.estimularRN(red_somnolencia,cara.flatten())
+            Atencion = rn.estimularRN(red_atento,cara.flatten())
+            Operador = rn.estimularRN(red_operador,cara.flatten())
+	    print Somnolencia, Atencion, Operador
+	    
+	    if Operador < 5:
+		print "Estado de la alarma: Persona no reconocida"
+                a.ajeno()
+	    if Atencion < 5:
+		print "Estado de la alarma: Distraido"
+                a.distraido()
+	    if Somnolencia > 9.8:
+		print "Estado de la alarma: Somnoliento"
+                a.somnoliento()
+		
+        
+    
+
+if __name__ == "__main__":
+    run()

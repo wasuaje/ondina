@@ -1,0 +1,72 @@
+<html>
+<head class="no-js">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reconocimiento de Somnolencia</title>
+
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/foundation.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+
+  <script src="/static/js/vendor/modernizr.js"></script>
+  <script src="/static/js/vendor/jquery.js"></script>
+  <script src="/static/js/foundation/foundation.js"></script>
+  <script src="/static/js/tesis.js"></script>
+
+ <script type="text/javascript">
+function showimagepreview(input) {
+if (input.files && input.files[0]) {
+var filerdr = new FileReader();
+filerdr.onload = function(e) {
+$('#imgprvw').attr('src', e.target.result);
+}
+filerdr.readAsDataURL(input.files[0]);
+}
+}
+</script>
+</head>
+
+
+<body>
+
+ 
+  <!-- Main Page Content and Sidebar -->
+ 
+  <div class="row">
+	<h2>{{ mensaje }}</h2>
+    <!-- Contact Details -->
+    <div class="large-12 columns">
+	  <section class="section">
+		<h4>Seleccione la foto del operador a registrar</h4>
+		<p>Debe subir imagenes en formato "jpg" exclusivamente de los operadores que laboran en CCTV</p>
+		<p>Todas las fotos almacenadas seran utilizadas por el sistema</p>
+	  </section>
+ 
+        <section class="section">
+		  <div class="large-6 columns">
+            <form id="dataform" action="guardarimagen" method="post" enctype="multipart/form-data">
+              <input type="file" name="filUpload" id="filUpload" onchange="showimagepreview(this)" />
+              <button type="submit" id="enviar" class="radius button">Subir y Guardar</button>
+            </form>
+          </div>
+		 
+		  <div class="large-6 columns" id="muestra">
+			<img id="imgprvw" alt="muestra"/> 
+ 		  </div>
+        </section>
+
+        <section class="section">
+
+            <ul class="large-block-grid-5">
+			  {% for i in imagenes %}
+			  <li><img src="/static/img/operadores/{{ i }}"></li>
+			  {% endfor %}
+			  
+            </ul>
+
+        </section>
+      </div>
+    </div>
+</body>
+</html>

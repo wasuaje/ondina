@@ -1,0 +1,24 @@
+img
+{
+	max-height:150px;
+}
+p
+{
+	margin:0;
+	padding:0;
+}
+
+section
+{
+	margin-top:50px;
+	padding-bottom:50px;
+}
+
+#nuevafoto
+{
+	padding-bottom:50px;
+}
+
+li{
+	display:inline-block;
+}

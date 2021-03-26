@@ -1,0 +1,90 @@
+<html>
+<head class="no-js">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reconocimiento de Somnolencia</title>
+
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/foundation.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+
+  <script src="/static/js/vendor/modernizr.js"></script>
+  <script src="/static/js/vendor/jquery.js"></script>
+  <script src="/static/js/foundation/foundation.js"></script>
+
+ <script type="text/javascript">
+function entrenar(){
+    alert("El sitema ha comenzado a restructurarce, por favor espere unos minutos hasta que finalice");
+	$.ajax({
+	    url:"/entrenar/entrenar",
+            data:"",
+            contentType: "application/json",
+            success:function(result){
+                alert(result.mensaje);
+	        }
+	});
+};
+
+function validar()
+{
+    var p = $("#pass").val();
+    $.ajax({
+	    url:"/cambiar/cambiar",
+            data:{"contra":p},
+            contentType: "application/json",
+            success:function(result){
+                if(result.mensaje === true)
+                {
+                    entrenar();
+                }
+                else
+                {
+                    alert("Contraseña invalida");
+                }
+	        }
+	});
+};
+</script>
+</head>
+
+
+<body>
+
+ 
+  <!-- Main Page Content and Sidebar -->
+ 
+  <div class="row">
+	<h2>{{ mensaje }}</h2>
+    <!-- Contact Details -->
+    <div class="large-12 columns">
+	  <p><strong>Nota:</strong> Si se ha adicionado o eliminado alguna foto del sistema, este debe ser reconfigurado nuevamente para que su funcionamiento sea optimo</p>
+
+	  <p>Este proceso puede tardar unos minutos, todo dependiendo de la velocidad de procesamiento del CPU de la PC. Se recomienda no activar el sistema mientra se esta restructurando.</p>
+	  <section class="section">
+	  </section>
+ 
+    </div>
+  </div>
+
+  <div id="registrard">
+				<div class="large-4 columns"></div>
+	  			<div class="large-4 large-centered columns" id="registrarpanel" role="content">
+	  				<section class="section">
+    
+					  <div class="row">
+						<div class="large-12 columns">
+						  <label>Ingrese contraseña
+							<input id="pass" type="password" placeholder="Contraseña" />
+						  </label>
+						</div>
+					  </div>
+  
+					  <button id="entrenarS" class="button radius tiny" onClick="validar()">Restablecer el sistema</button>
+					</section>
+				</div>
+	  			<div class="large-4 columns"></div>
+			</div>
+
+</body>
+</html>

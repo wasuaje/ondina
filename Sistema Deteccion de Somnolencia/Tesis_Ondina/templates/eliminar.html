@@ -1,0 +1,76 @@
+<html>
+<head class="no-js">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reconocimiento de Somnolencia</title>
+
+  <link rel="stylesheet" href="/static/css/normalize.css">
+  <link rel="stylesheet" href="/static/css/foundation.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+
+  <script src="/static/js/vendor/modernizr.js"></script>
+  <script src="/static/js/vendor/jquery.js"></script>
+  <script src="/static/js/foundation/foundation.js"></script>
+
+<script type="text/javascript">
+var myRadioValue;
+
+function radioValue(jqRadioButton){
+  if (jqRadioButton.length) {
+    myRadioValue = jqRadioButton.val();
+    return myRadioValue;
+  }
+  else {
+    myRadioValue = 0;
+  }
+}
+
+$(document).ready(function () {
+  
+  $('input[name=operador]:radio').click(function () {   //Hook the click event for selected elements
+    radioValue($('input[name=operador]:radio:checked'));
+  });
+
+  
+
+
+
+});
+
+</script>
+</head>
+
+
+<body>
+
+ 
+  <!-- Main Page Content and Sidebar -->
+ 
+  <div class="row">
+ 
+    <!-- Contact Details -->
+    <div class="large-12 columns">
+	  <h2>{{ mensaje }}</h2>
+	  <section class="section">
+		<h4>Seleccione la foto del operador a eliminar</h4>
+		<p>La foto a eliminar modificara el funcionamiento del sistema, una vez eliminado se recomienda no cerrar el programa ni apagar la computadora para que el sistema se reconfigure exitosamente</p>
+		<p>Todas las fotos almacenadas seran utilizadas por el sistema</p>
+		
+		<a href="/" class="button radius tiny">Regresar al Inicio</a>
+	  </section>
+
+        <section class="section">
+		  <form action="eliminarimagen" method="post" enctype="multipart/form-data">
+              <ul class="large-block-grid-5">
+				{% for i in imagenes %}
+				<li><input type="radio" name="operador" id="i{{i}}" value="{{ i }}"/><label for="i{{i}}"><img src="/static/img/operadores/{{ i }}"></label></li>
+				{% endfor %}
+			  </ul>
+              <button type="submit" id="enviare" class="radius button">Eliminar operadorr</button>
+		  </form>
+        </section>
+      </div>
+    </div>
+</body>
+</html>
